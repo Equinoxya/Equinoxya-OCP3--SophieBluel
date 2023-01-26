@@ -9,9 +9,6 @@ const fetchPromise = fetch('http://localhost:5678/api/works')
         console.error(`Impossible de récupérer les produits : ${error}`);
       });
       
-
-
-
 function genererWorks(projet){
         for (let i=0; i<projet.length; i++){
         const sectionGallery = document.querySelector('.gallery');
