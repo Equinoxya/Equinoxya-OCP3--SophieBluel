@@ -23,3 +23,30 @@ function genererWorks(projet){
         figureElement.appendChild(imgElement);
         figureElement.appendChild(titleElement)
 }}
+// Création des buttons 
+const fetchPromiseCat = fetch('http://localhost:5678/api/categories')
+  .then(reponse => reponse.json())
+  .then((data) => {
+    categories=data;
+    genererButton(categories);
+    console.log(categories);
+  })
+  .catch(error => {
+    console.error(`Impossible de recuperer les categories: ${error}`)
+    })
+  
+function genererButton(categories){
+    const portfolio = document.querySelector("#portfolio");
+    const divButton = document.createElement('div');
+    const buttonTous= document.createElement('button');
+    buttonTous.innerText= "Tous";
+    divButton.appendChild(buttonTous);
+  for (let i=0; i<categories.length;i++){
+    const article = categories[i];
+    const button= document.createElement('button');
+    button.innerText = article.name;
+    portfolio.appendChild(divButton);
+    divButton.appendChild(button);
+  }
+}
+const buttonFilter = document.querySelectorAll('button');
