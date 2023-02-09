@@ -26,13 +26,15 @@
 
     <div class="login">
         <h2>Log in</h2>
-        <form action="submit">email
-            <input type="text">
-        </form>
-        <form action="submit">mot de passe
-            <input type="text">
-        </form>
-        <button>Se connecter</button>
+        <form id="loginForm">
+			<label for="email">Email</label>
+			<input type="text" id="email" name="email">
+		
+			<label for="password">Mot de passe</label>
+			<input type="password" id="password" name="password">
+		
+			<input type="submit" value="Soumettre">
+		</form>
         <a href="#">Mot de passe oublié</a>
     </div>
 	
@@ -45,6 +47,6 @@
 		</ul>
 	</nav>
 </footer>
-<script src="login.js"></script>
+<script type="module" src="login.js"></script>
 </body>
 </html>

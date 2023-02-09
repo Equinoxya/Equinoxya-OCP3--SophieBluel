@@ -31,6 +31,7 @@ genererWork(works);
 //génération du tableau de Catégories uniques
     function generateUniqueCategories(){
       let categoriesUniques = [];
+      console.log(categoriesUniques);
       for ( let work of works){
         const result = categoriesUniques.find(function(category){
           return category.id === work.category.id;
@@ -42,6 +43,7 @@ genererWork(works);
       }
       return categoriesUniques;
     }
+    
 
 
 //génération des filtres
@@ -61,8 +63,8 @@ allCategoriesFilter.addEventListener('click', function() {
 });
 //Génération des 3 filtres 
 const filterContainer = document.querySelector('.filter-btn');
-for (let category of categories) {
 
+for (let category of categories) {
   let filterButton = document.createElement('button');
   filterButton.innerText = category.name;
   filterButton.setAttribute('data-category-id', category.id);
