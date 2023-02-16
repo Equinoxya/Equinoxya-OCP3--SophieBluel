@@ -4,28 +4,44 @@
 	<meta charset="UTF-8">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://kit.fontawesome.com/e96e865ef4.js" crossorigin="anonymous"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
+	
 <body>
+
+
+	<div class="editMode" id="adminMode">
+		<i class="fa-regular fa-pen-to-square"></i>
+		<p>Mode édition</p>
+		<button type="button">publier les changements</button>
+	</div>
+	
+
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li><a href="login.html">login</a></li>
+			<li id="cacheMode"><a href="login.html">login</a></li>
+			<li id="adminMode" class="deconnexion"><a href="#" >logout</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
 <main>
 	<section id="introduction">
-		<figure>
+		<figure class="Admin">
 			<img src="./assets/images/sophie-bluel.png" alt="">
+			<div class="modif" id="adminMode">
+				<i class="fa-regular fa-pen-to-square"></i>
+				<p>Modifier</p>
+			</div>
 		</figure>
 		<article>
 			<h2>Designer d'espace</h2>
@@ -34,50 +50,17 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-
-
-
-
-
-
-
+		
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<div class="filter-btn"></div>
+		<h2>Mes Projets 
+			<div class="modif" id="adminMode">
+				<i class="fa-regular fa-pen-to-square"></i>
+				<p>Modifier</p>
+			</div>
+		</h2>
+		<div class="filter-btn" id="cacheMode"></div>
 		<div class="gallery"></div>
 	</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>

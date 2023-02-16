@@ -28,6 +28,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
@@ -82,7 +83,11 @@ h2{
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: #1D6154;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
 }
 nav ul {
 	display: flex;
@@ -96,7 +101,7 @@ nav li {
 }
 nav li a{
 	text-decoration: none;
-	color: #3D3D3D;
+	color: black
 	
 }
 nav li a:hover{
@@ -123,11 +128,14 @@ li:hover {
 	flex: 1
 }
 #introduction h2 {
-	margin-bottom: 1em;
+	margin-bottom: em;
+	display: flex;
+	justify-content: flex-start;
 }
 
 #introduction p {
 	margin-bottom: 0.5em;
+	width: 70%;
 }
 #portfolio{
 	gap: 50px;
@@ -220,6 +228,7 @@ footer nav ul {
 	margin: 2em
 }
 
+/*//////////////////////////////////////////////////////////////////*/
 /*Login*/
 .login{
 	height: 40em;
@@ -257,4 +266,47 @@ footer nav ul {
 }
 .login a{
 	color: #3D3D3D;
+}
+/*////////////////////////////////////////////////////////////////////////////*/
+/*EditMode*/
+#adminMode{
+	display: none;
+}
+.deconnexion{
+	display: none;
+}
+.editMode{
+	display: flex;
+	height: 59px;
+	gap: 10px;
+	background-color: black;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Work Sans';
+}
+.editMode button{
+	background-color: white;
+	padding: 15px;
+	border-radius: 25px;
+	font-family: 'Work Sans';
+	font-weight: 500;
+	border-style: none;
+}
+.Admin{
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.modif{
+	display: flex;
+	gap: 10px;
+	padding: 10px;
+	color: black;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
 }

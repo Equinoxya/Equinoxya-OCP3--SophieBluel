@@ -1,25 +1,39 @@
-const appelLogin = fetch("http://localhost:5678/api/users/login", 
-    {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        }
+const form = document.querySelector('form');
+const emailInput = document.querySelector('#email');
+const passwordInput = document.querySelector('#password');
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const response = await fetch('http://localhost:5678/api/users/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        email: emailInput.value,
+        password: passwordInput.value
+    })
     });
-const result = await Response.json();
-console.log(result);
 
+    const data = await response.json();
+    const token = data.token;
 
-
-
-
-
-/*const loginForm = document.getElementById("loginForm");
-
-loginForm.addEventListener("submit", function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    if(email === email &&  password === password){
-        alert('connexion réussite')
-    } else {alert('email ou mot de passe incorrect')}
-})*/
+    if (token) {
+        // Stockez le jeton d'accès dans le stockage local du navigateur
+        localStorage.setItem('token', token);
+    
+        // Redirigez l'utilisateur vers la page index.html
+        window.location.href = 'index.html';
+        
+        // Recherchez les éléments avec l'id "adminMode" dans la page index.html
+        const adminModeElements = document.querySelectorAll('#adminMode');
+    
+        // Affichez les éléments avec la classe "adminMode"
+        adminModeElements.forEach(element => {
+            element.style.display = 'flex';
+        });
+    } else {
+        // Affichez un message d'erreur si la connexion a échoué
+        alert('Email ou mot de passe incorrect.');
+    }});
