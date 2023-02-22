@@ -142,7 +142,8 @@ logout.addEventListener('click',function(){
 //génération de la gallery du modal modif
 function modalegallery(){
   for (let i = 0; i < works.length; i++){
-    const article = works[i];
+  //Recupération des données pour les images
+  const article = works[i];
   const modale = document.querySelector('.gallery-modal');
   let figureModale = document.createElement('figure');
   figureModale.classList.add ('figureEdit');
@@ -153,6 +154,7 @@ function modalegallery(){
   imgModale.crossOrigin = "anonymous";
   const editImg = document.createElement('figcaption');
   editImg.innerText = 'éditer';
+  //Ajout des icones et de leurs fonds
   const containerIconTrash = document.createElement('div');
   containerIconTrash.classList.add('containerIconTrash');
   const trashIcon = document.createElement("i");
@@ -173,6 +175,7 @@ function modalegallery(){
   }
 }
 
+//ouverture de la modale
 const openModale = document.querySelector('.modifButton');
 openModale.addEventListener('click',function(){
   const modaleModeElements = document.querySelectorAll('#modaleShow');
@@ -180,27 +183,29 @@ openModale.addEventListener('click',function(){
       element.style.display = 'flex';
   });
 })
+//fermeture de la modale par la croix
 const closeModale = document.querySelector('.fa-xmark');
 closeModale.addEventListener('click',function(){
   const modaleCloseElements = document.querySelectorAll('#modaleShow');
   modaleCloseElements.forEach(element => {
       element.style.display = 'none';
   });
-
 })
+//fermeture de la modale par clic en dehors
 const closeModaleBloc = document.querySelector('.modale');
 closeModaleBloc.addEventListener('click',function(){
   const modaleCloseBlocElements = document.querySelectorAll('#modaleShow');
   modaleCloseBlocElements.forEach(element => {
       element.style.display = 'none';
+      //empêche la propagation du closeClick dans la box
       const blocPropa = document.querySelector('.modale-box');
       blocPropa.addEventListener('click', stopPropagation)
   });
 })
-const stopPropagation = function(e){
-  e.stopPropagation();
+//Fonction pour faire en sorte que le clic sur le modal ne le ferme pas 
+const stopPropagation = function(event){
+  event.stopPropagation();
 }
-
 //Générer les fonctions 
 genererWork(works);
 modalegallery(works);
