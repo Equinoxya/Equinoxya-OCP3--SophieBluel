@@ -20,7 +20,41 @@
 		<p>Mode édition</p>
 		<button type="button">publier les changements</button>
 	</div>
-	
+
+
+
+
+
+
+
+
+
+
+
+
+	<aside class="modale" id="modaleShow">
+		<div class="modale-box">
+		<i class="fa-solid fa-xmark"></i>	
+		<p>Galerie photo</p>
+		<div class="gallery-modal">
+
+		</div>
+		<button class="buttonAdd">Ajouter une photo</button>
+		<button class="supprGallery">Supprimer la gallerie</button>
+	</div>
+	</aside>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
@@ -35,6 +69,7 @@
 	</nav>
 </header>
 <main>
+	
 	<section id="introduction">
 		<figure class="Admin">
 			<img src="./assets/images/sophie-bluel.png" alt="">
@@ -44,6 +79,10 @@
 			</div>
 		</figure>
 		<article>
+			<div class="modif" id="adminMode">
+				<i class="fa-regular fa-pen-to-square"></i>
+				<p>Modifier</p>
+			</div>
 			<h2>Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
@@ -53,10 +92,10 @@
 		
 	<section id="portfolio">
 		<h2>Mes Projets 
-			<div class="modif" id="adminMode">
+			<button class="modifButton" id="adminMode modaleShow">
 				<i class="fa-regular fa-pen-to-square"></i>
 				<p>Modifier</p>
-			</div>
+			</button>
 		</h2>
 		<div class="filter-btn" id="cacheMode"></div>
 		<div class="gallery"></div>

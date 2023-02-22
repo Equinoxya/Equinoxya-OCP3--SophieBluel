@@ -48,7 +48,6 @@ const works = await reponse.json();
       return categoriesUniques;
     }
 
-//"TOUS"=["Objets","Appartements","Hôtels & Restaurants"]
 
 //génération des filtres
 const categories = generateUniqueCategories();
@@ -94,6 +93,9 @@ for (let category of categories) {
   filterContainer.appendChild(filterButton);
 }
 
+
+
+
 //LOGIN
 function showAdminModeElements() {
   const adminModeElements = document.querySelectorAll('#adminMode');
@@ -137,7 +139,68 @@ logout.addEventListener('click',function(){
   });
 
 
+//génération de la gallery du modal modif
+function modalegallery(){
+  for (let i = 0; i < works.length; i++){
+    const article = works[i];
+  const modale = document.querySelector('.gallery-modal');
+  let figureModale = document.createElement('figure');
+  figureModale.classList.add ('figureEdit');
+  let contenairImg = document.createElement('div');
+  contenairImg.classList.add('containerImg')
+  let imgModale = document.createElement('img');
+  imgModale.src = article.imageUrl;
+  imgModale.crossOrigin = "anonymous";
+  const editImg = document.createElement('figcaption');
+  editImg.innerText = 'éditer';
+  const containerIconTrash = document.createElement('div');
+  containerIconTrash.classList.add('containerIconTrash');
+  const trashIcon = document.createElement("i");
+  trashIcon.classList.add("fa", "fa-trash-can");
+  const containerIconCross = document.createElement('div');
+  containerIconCross.classList.add('containerIconCross');
+  const crossIcon = document.createElement("i");
+  crossIcon.classList.add("fa", "fa-up-down-left-right");
+  crossIcon.crossOrigin = 'anonymous';
+  figureModale.appendChild(contenairImg);
+  contenairImg.appendChild(containerIconTrash);
+  contenairImg.appendChild(containerIconCross);
+  containerIconTrash.appendChild(trashIcon);
+  containerIconCross.appendChild(crossIcon);
+  modale.appendChild(figureModale);
+  contenairImg.append(imgModale);
+  figureModale.append(editImg);
+  }
+}
 
-//appel à la fonction pour générer la galerie
-//générer les fonctions en bas
+const openModale = document.querySelector('.modifButton');
+openModale.addEventListener('click',function(){
+  const modaleModeElements = document.querySelectorAll('#modaleShow');
+  modaleModeElements.forEach(element => {
+      element.style.display = 'flex';
+  });
+})
+const closeModale = document.querySelector('.fa-xmark');
+closeModale.addEventListener('click',function(){
+  const modaleCloseElements = document.querySelectorAll('#modaleShow');
+  modaleCloseElements.forEach(element => {
+      element.style.display = 'none';
+  });
+
+})
+const closeModaleBloc = document.querySelector('.modale');
+closeModaleBloc.addEventListener('click',function(){
+  const modaleCloseBlocElements = document.querySelectorAll('#modaleShow');
+  modaleCloseBlocElements.forEach(element => {
+      element.style.display = 'none';
+      const blocPropa = document.querySelector('.modale-box');
+      blocPropa.addEventListener('click', stopPropagation)
+  });
+})
+const stopPropagation = function(e){
+  e.stopPropagation();
+}
+
+//Générer les fonctions 
 genererWork(works);
+modalegallery(works);
