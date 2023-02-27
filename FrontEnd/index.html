@@ -25,26 +25,55 @@
 
 
 
-
-
-
-
-
-
-
 	<aside class="modale" id="modaleShow">
 		<div class="modale-box">
 		<i class="fa-solid fa-xmark"></i>	
 		<p>Galerie photo</p>
 		<div class="gallery-modal">
-
 		</div>
 		<button class="buttonAdd">Ajouter une photo</button>
 		<button class="supprGallery">Supprimer la gallerie</button>
-	</div>
+		</div>
 	</aside>
 
 
+
+
+
+
+
+
+	
+
+	<aside class="modaleAjout" id="modaleShowAjout">
+		<div class="modale-box-ajout">
+			
+				<div class="icones">
+					<i class="fa-solid fa-arrow-left"></i>
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+			<div class="modale-contenu">
+				<p class="ajouttitle">Ajout photo</p>
+				<div class="blocAjout">
+					<i class="fa-regular fa-image fa-7x"></i>
+					<button>+ Ajouter photo</button>
+					<p class="conditions">jpg, png : 4mo max</p>
+				</div>
+				<form action="submit">
+					<label for="Titre">Titre</label>
+					<input type="text" id="Titre" name="Titre">
+					<label for="Catégorie">Catégorie</label>
+					<select id="Catégorie" name="Catégorie">
+						<option value="none"></option>
+						<option value="objet">Objets</option>
+						<option value="appartements">Appartements</option>
+						<option value="hotel-restaurant">Hôtels & Restaurants</option>
+					</select>
+				</form>
+			</div>
+			<button class="btn-valider">Valider</button>
+		</div>
+	</aside>
 
 
 
@@ -92,7 +121,7 @@
 		
 	<section id="portfolio">
 		<h2>Mes Projets 
-			<button class="modifButton" id="adminMode modaleShow">
+			<button class="modifButton modaleShow" id="adminMode">
 				<i class="fa-regular fa-pen-to-square"></i>
 				<p>Modifier</p>
 			</button>

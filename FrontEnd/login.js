@@ -21,7 +21,7 @@ form.addEventListener('submit', async (event) => {
 
     if (token) {
         // Stockez le jeton d'accès dans le stockage local du navigateur
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
     
         // Redirigez l'utilisateur vers la page index.html
         window.location.href = 'index.html';

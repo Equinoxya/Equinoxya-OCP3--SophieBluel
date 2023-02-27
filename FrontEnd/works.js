@@ -27,6 +27,7 @@ const works = await reponse.json();
             sectionGallery.appendChild(figureElement);
             figureElement.appendChild(imgElement);
             figureElement.appendChild(titleElement);
+            
       }
     }
 
@@ -41,7 +42,7 @@ const works = await reponse.json();
           return category.id === work.category.id;
         });
         if(result === undefined){
-          //Si le nom est undefined on y ajoute le nom de la catégorie
+          //Si le nom n'est pas déjà dans le tableau on y ajoute le nom de la catégorie
           categoriesUniques.push(work.category);
         }
       }
@@ -110,7 +111,7 @@ function cacheAdminModeElements() {
   });
 }
 // Vérifiez si l'utilisateur est connecté
-const token = localStorage.getItem('token');
+const token = sessionStorage.getItem('token');
 if (token) {
   showAdminModeElements();
   cacheAdminModeElements();
@@ -133,10 +134,13 @@ function cacheViewModeElements() {
 const logout = document.querySelector('.deconnexion');
 
 logout.addEventListener('click',function(){
-  localStorage.clear('token');
+  sessionStorage.clear('token');
   showViewModeElements();
   cacheViewModeElements();
   });
+
+
+
 
 
 //génération de la gallery du modal modif
@@ -157,6 +161,7 @@ function modalegallery(){
   //Ajout des icones et de leurs fonds
   const containerIconTrash = document.createElement('div');
   containerIconTrash.classList.add('containerIconTrash');
+  containerIconTrash.setAttribute('data-id', article.id);
   const trashIcon = document.createElement("i");
   trashIcon.classList.add("fa", "fa-trash-can");
   const containerIconCross = document.createElement('div');
@@ -172,40 +177,145 @@ function modalegallery(){
   modale.appendChild(figureModale);
   contenairImg.append(imgModale);
   figureModale.append(editImg);
+
+
+
+
+
+
+
+
+  containerIconTrash.addEventListener('click', function(event){
+    event.preventDefault();
+    const id = this.getAttribute('data-id'); // Récupération de l'identifiant de l'article
+    fetch(`http://localhost:5678/api/works/${id}`, { // Utilisation de l'identifiant dans l'URL
+      method : 'DELETE',
+      headers:{
+          "Content-Type":'application/json',
+          "Authorization": `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      if(response.ok){
+        console.log("L'image a bien été supprimée");
+      }
+    })
+    .catch(error => {
+      console.error("Erreur lors de la suppression de l'image :", error);
+    });
+  });
   }
 }
+const supprGallery = document.querySelector('.supprGallery');
+
+supprGallery.addEventListener('click', function() {
+  const containersIconTrash = document.querySelectorAll('.containerIconTrash');
+  containersIconTrash.forEach(containerIconTrash => {
+    const id = containerIconTrash.getAttribute('data-id');
+    fetch(`http://localhost:5678/api/works/${id}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log(`L'article ${id} a bien été supprimé`);
+      }
+    })
+    .catch(error => {
+      console.error(`Erreur lors de la suppression de l'article ${id} :`, error);
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //ouverture de la modale
 const openModale = document.querySelector('.modifButton');
-openModale.addEventListener('click',function(){
+
+openModale.addEventListener('click',function(event){
+  event.preventDefault();
   const modaleModeElements = document.querySelectorAll('#modaleShow');
   modaleModeElements.forEach(element => {
       element.style.display = 'flex';
   });
 })
+
+
+//IF
+
+
 //fermeture de la modale par la croix
 const closeModale = document.querySelector('.fa-xmark');
-closeModale.addEventListener('click',function(){
+closeModale.addEventListener('click',function(event){
+  event.preventDefault();
   const modaleCloseElements = document.querySelectorAll('#modaleShow');
   modaleCloseElements.forEach(element => {
       element.style.display = 'none';
   });
-})
+});
+
 //fermeture de la modale par clic en dehors
-const closeModaleBloc = document.querySelector('.modale');
-closeModaleBloc.addEventListener('click',function(){
+document.querySelector('.modale').addEventListener('click',function(){  
   const modaleCloseBlocElements = document.querySelectorAll('#modaleShow');
   modaleCloseBlocElements.forEach(element => {
       element.style.display = 'none';
-      //empêche la propagation du closeClick dans la box
-      const blocPropa = document.querySelector('.modale-box');
-      blocPropa.addEventListener('click', stopPropagation)
-  });
-})
+});
+  const blocPropa = document.querySelector('.modale-box');
+  blocPropa.addEventListener('click', stopPropagation);
+});
 //Fonction pour faire en sorte que le clic sur le modal ne le ferme pas 
 const stopPropagation = function(event){
   event.stopPropagation();
 }
+
+
+
+
+//AjoutPhoto
+
+document.querySelector('.buttonAdd').addEventListener('click',function(){
+  const modaleModeElements = document.querySelectorAll('#modaleShowAjout');
+  modaleModeElements.forEach(element => {
+      element.style.display = 'flex';
+  });
+})
+document.querySelector('.modaleAjout').addEventListener('click',function(){
+  const modaleCloseBlocElements = document.querySelectorAll('#modaleShowAjout');
+  modaleCloseBlocElements.forEach(element => {
+      element.style.display = 'none';
+});
+  const blocPropa = document.querySelector('.modale-box-ajout');
+  blocPropa.addEventListener('click', stopPropagation);
+});
+
+
+
+
+
+
+
+
+
+
 //Générer les fonctions 
 genererWork(works);
 modalegallery(works);
