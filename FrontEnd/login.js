@@ -35,5 +35,5 @@ form.addEventListener('submit', async (event) => {
         });
     } else {
         // Affichez un message d'erreur si la connexion a échoué
-        alert('Erreur dans l’identifiant ou le mot de passe');
+        alert('Erreur dans l\'identifiant ou le mot de passe')
     }});
