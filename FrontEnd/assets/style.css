@@ -363,14 +363,15 @@ footer nav ul {
 }
 .gallery-modal{
 	width: 70%;
-	height: 70%;
-	border-bottom: 1px solid #B3B3B3;
-	display: flex;
-	flex-wrap: wrap;
+    height: 70%;
+    border-bottom: 1px solid #B3B3B3;
+    display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
-	justify-content: space-between;
-	align-content: center;
+    justify-content: flex-start;
+    align-content: center;
+    gap: 1%;
 }
 .fa-xmark{
 	margin-left: 85%;
@@ -493,11 +494,12 @@ footer nav ul {
 	font-weight: 500;
 }
 #input-file{
-	width: 12%;
+	width: 10%;
     height: 7%;
     position: absolute;
     bottom: 55%;
 	opacity: 0;
+
 }
 
 .conditions{
@@ -568,4 +570,14 @@ footer nav ul {
 	font-family: 'Syne';
 	color: white;
 	font-size: 14px;
+
+}
+.hidden{
+	display: none;
+}
+.active{
+	display: flex;
+}
+.green{
+	background-color: #1D6154;
 }

@@ -12,6 +12,7 @@ function genererWork () {
       const article = works[i];
     //Création de la figure
       let figureElement = document.createElement("figure");
+      figureElement.classList.add('.figure-gallery')
     //SetAttribue pour attribuer les catégories correspondantes
         figureElement.setAttribute("data-category-id", works[i].category.id)
     //ajout d'une classe pour que ça ne prenne pas toutes les figures de la page
@@ -202,7 +203,6 @@ containerIconTrash.addEventListener('click', function(event){
 }
 
 
-
 //MODALE
 // Vérification de l'initialisation de la modale
 const openModale = document.querySelector('.modifButton');
@@ -294,12 +294,57 @@ inputFile.addEventListener('change', function(event){
     reader.readAsDataURL(file);
   }
 });
-const inputTitle = document.getElementById('title')
-const inputCategorie = document.getElementById('categorie')
+const form = document.querySelector('#form-post');
+const fileInput = document.querySelector('#input-file');
+const titleInput = document.querySelector('#title');
+const categorySelect = document.querySelector('#categorie');
+const btnValider = document.querySelector('.btn-valider');
 
+fileInput.addEventListener('input', checkInputs);
+titleInput.addEventListener('input', checkInputs);
+categorySelect.addEventListener('input', checkInputs);
 
+function checkInputs() {
+  if (fileInput.value !== '' && titleInput.value !== '' && categorySelect.value !== '') {
+    btnValider.classList.add('green');
+  } else {
+    btnValider.classList.remove('green');
+  }
+}
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+  formData.append('image', fileInput.files[0]);
+  formData.append('title', titleInput.value);
+  formData.append('category', categorySelect.options[categorySelect.selectedIndex].dataset.categoryId);
+  if (fileInput.value === "" || title.value === "" || categorySelect.value === "") {
+    alert("Veuillez remplir tous les champs.");
+    return;
+  } else {document.querySelector('.btn-valider').classList.add('green')}
+  fetch('http://localhost:5678/api/works', {
+    method: 'POST',
+    headers: {
+        'authorization':`Bearer ${token}`
+    },
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      alert (`L'image a bien été envoyée !`);
+      return response.json();
+      
+    } else {
+      alert(`L'image n'a pas pu être postée !`)
+      throw new Error('Error during request');
+    }
+  })
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
+});
 
 
 //Générer les fonctions 
 genererWork(works);
-modalegallery(works);
+modalegallery(works); console.log(works);

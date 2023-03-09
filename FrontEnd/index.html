@@ -25,54 +25,7 @@
 
 
 
-	<aside class="modale" id="modaleShow">
-		<div class="modale-box">
-		<i class="fa-solid fa-xmark"></i>	
-		<p>Galerie photo</p>
-		<div class="gallery-modal">
-		</div>
-		<button class="buttonAdd">Ajouter une photo</button>
-		<button class="supprGallery">Supprimer la gallerie</button>
-		</div>
-	</aside>
 
-
-
-
-
-
-
-
-	
-
-	<aside class="modaleAjout" id="modaleShowAjout">
-		<div class="modale-box-ajout">
-			
-				<div class="icones">
-					<i class="fa-solid fa-arrow-left"></i>
-					<i class="fa-solid fa-xmark"></i>
-				</div>
-			<div class="modale-contenu">
-				<p class="ajouttitle">Ajout photo</p>
-				<form action="submit" id="form-post">
-				<div class="blocAjout">
-					<i class="fa-regular fa-image fa-7x"></i>
-					<input type="file" id="input-file" accept=".png, .jpg">
-					<button id="files-button">+ Ajout photo</button>
-					<p class="conditions">jpg, png : 4mo max</p>
-					
-				</div>
-				
-					<label for="Titre">Titre</label>
-					<input type="text" id="title" name="Titre">
-					<label for="Catégorie">Catégorie</label>
-					<select id="categorie" name="Catégorie">
-					</select>
-				</form>
-			</div>
-			<button class="btn-valider">Valider</button>
-		</div>
-	</aside>
 
 
 
@@ -151,5 +104,46 @@
 	</nav>
 </footer>
 <script type="module" src="works.js"></script>
+
+
+
+
+<aside class="modale" id="modaleShow">
+	<div class="modale-box">
+	<i class="fa-solid fa-xmark"></i>	
+	<p>Galerie photo</p>
+	<div class="gallery-modal">
+	</div>
+	<button class="buttonAdd">Ajouter une photo</button>
+	<button class="supprGallery">Supprimer la gallerie</button>
+	</div>
+</aside>
+<aside class="modaleAjout" id="modaleShowAjout">
+	<div class="modale-box-ajout">
+		
+			<div class="icones">
+				<i class="fa-solid fa-arrow-left"></i>
+				<i class="fa-solid fa-xmark"></i>
+			</div>
+		<div class="modale-contenu">
+			<p class="ajouttitle">Ajout photo</p>
+				<form action="submit" id="form-post">
+				<div class="blocAjout">
+					<i class="fa-regular fa-image fa-5x"></i>
+					<input type="file" id="input-file" accept=".png, .jpg" size="4000000">
+					<button type="button" id="files-button">+ Ajout photo</button>
+					<p class="conditions">jpg, png : 4mo max</p>
+				</div>
+					<label for="Titre">Titre</label>
+					<input type="text" id="title" name="Titre">
+					<label for="Catégorie">Catégorie</label>
+					<select id="categorie" name="Catégorie"></select>
+				</div>
+					<button type="submit" class="btn-valider" id="postForm">Valider</button>
+				</form>		
+			
+						
+		</div>
+</aside>
 </body>
 </html>
