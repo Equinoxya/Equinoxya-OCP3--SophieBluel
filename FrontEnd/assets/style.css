@@ -390,7 +390,7 @@ footer nav ul {
 }
 .buttonAdd{
 	font-family: 'Syne';
-	width: 35%;
+	width: 50%;
 	height: 35px;
 	background-color: #1D6154;
 	border: none;
@@ -486,7 +486,7 @@ footer nav ul {
 .fa-angle-down{
 	position: absolute;
     right: 40%;
-    bottom: 35%;
+    bottom: 33%;
 	color: #6C6C6C;
 }
 .conditions{

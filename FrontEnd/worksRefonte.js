@@ -325,13 +325,30 @@ inputFile.addEventListener('change', function() {
             submitBtn.id = 'postForm'
             formAdd.appendChild(submitBtn)
         if(fenetreModale){
-            formAdd.addEventListener('submit', addProjet);}
+            formAdd.addEventListener('submit', addProjet);
+        }
+        inputFile.addEventListener('change', checkInputs);
+        inputTitle.addEventListener('change', checkInputs);
+        selectCat.addEventListener('change', checkInputs);
+function checkInputs() {
+  // Vérifier si tous les éléments ont une valeur
+    if (inputFile.value && inputTitle.value && selectCat.value) {
+    // Changer la couleur du bouton Valider
+        submitBtn.classList.add('green');
+    } else {
+        submitBtn.classList.remove('green');
+    }
+}
     });
             const btnSuppr = document.createElement('button');
             btnSuppr.classList.add ('supprGallery');
             btnSuppr.innerText = 'Supprimer la galerie'
             fenetreModale.appendChild(btnSuppr);
+            // Ajouter des événements "change" à chaque élément d'entrée
+
 }
+
+
 function modalegallery(){
     for (let i = 0; i < works.length; i++){
         //Recupération des données pour les images
