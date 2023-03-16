@@ -13,39 +13,14 @@
 </head>
 	
 <body>
-
-
-	<div class="editMode" id="adminMode">
-		<i class="fa-regular fa-pen-to-square"></i>
-		<p>Mode édition</p>
-		<button type="button">publier les changements</button>
-	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<header>
+<header id="header">
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li id="cacheMode"><a href="login.html">login</a></li>
-			<li id="adminMode" class="deconnexion"><a href="#" >logout</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			<li id="login"><a href="login.html">login</a></li>
+			<li id="insta"><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
@@ -54,31 +29,18 @@
 	<section id="introduction">
 		<figure class="Admin">
 			<img src="./assets/images/sophie-bluel.png" alt="">
-			<div class="modif" id="adminMode">
-				<i class="fa-regular fa-pen-to-square"></i>
-				<p>Modifier</p>
-			</div>
 		</figure>
-		<article>
-			<div class="modif" id="adminMode">
-				<i class="fa-regular fa-pen-to-square"></i>
-				<p>Modifier</p>
-			</div>
-			<h2>Designer d'espace</h2>
+		<article class="admin2">
+			<h2 id="h2Intro">Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-		
 	<section id="portfolio">
-		<h2>Mes Projets 
-			<button class="modifButton modaleShow" id="adminMode">
-				<i class="fa-regular fa-pen-to-square"></i>
-				<p>Modifier</p>
-			</button>
+		<h2 id="h2Portfolio">Mes Projets 
 		</h2>
-		<div class="filter-btn" id="cacheMode"></div>
+		<div class="filter-btn"></div>
 		<div class="gallery"></div>
 	</section>
 	<section id="contact">
@@ -95,7 +57,6 @@
 		</form>
 	</section>
 </main>
-
 <footer>
 	<nav>
 		<ul>
@@ -103,47 +64,6 @@
 		</ul>
 	</nav>
 </footer>
-<script type="module" src="works.js"></script>
-
-
-
-
-<aside class="modale" id="modaleShow">
-	<div class="modale-box">
-	<i class="fa-solid fa-xmark"></i>	
-	<p>Galerie photo</p>
-	<div class="gallery-modal">
-	</div>
-	<button class="buttonAdd">Ajouter une photo</button>
-	<button class="supprGallery">Supprimer la gallerie</button>
-	</div>
-</aside>
-<aside class="modaleAjout" id="modaleShowAjout">
-	<div class="modale-box-ajout">
-		
-			<div class="icones">
-				<i class="fa-solid fa-arrow-left"></i>
-				<i class="fa-solid fa-xmark"></i>
-			</div>
-		<div class="modale-contenu">
-			<p class="ajouttitle">Ajout photo</p>
-				<form action="submit" id="form-post">
-				<div class="blocAjout">
-					<i class="fa-regular fa-image fa-5x"></i>
-					<input type="file" id="input-file" accept=".png, .jpg" size="4000000">
-					<button type="button" id="files-button">+ Ajout photo</button>
-					<p class="conditions">jpg, png : 4mo max</p>
-				</div>
-					<label for="Titre">Titre</label>
-					<input type="text" id="title" name="Titre">
-					<label for="Catégorie">Catégorie</label>
-					<select id="categorie" name="Catégorie"></select>
-				</div>
-					<button type="submit" class="btn-valider" id="postForm">Valider</button>
-				</form>		
-			
-						
-		</div>
-</aside>
+<script type="module" src="worksRefonte.js"></script>
 </body>
 </html>
