@@ -89,10 +89,6 @@ tousFilter.addEventListener('click', function() {
 if(!token){
 createFilterButtons()}
 //------------------LOGIN----------------------------------------
-//Vérification du token 
-
-
-
 function adminModeElements(){
         const login = document.getElementById('login')
         login.remove()
@@ -374,6 +370,17 @@ async function modalegallery(){
         trashIcon.classList.add("fa", "fa-trash-can");
         const containerIconCross = document.createElement('div');
         containerIconCross.classList.add('containerIconCross');
+
+        // Ajouter un événement mouseenter à la figure pour afficher containerIconCross
+    figureModale.addEventListener('mouseenter', function() {
+        containerIconCross.style.display = 'flex';
+    });
+    
+    // Ajouter un événement mouseleave à la figure pour masquer containerIconCross
+    figureModale.addEventListener('mouseleave', function() {
+        containerIconCross.style.display = 'none';
+    });
+
         const crossIcon = document.createElement("i");
         crossIcon.classList.add("fa", "fa-up-down-left-right");
         crossIcon.crossOrigin = 'anonymous';
