@@ -1,11 +1,13 @@
-//appel à l'Api avec fetch()
-const reponse = await fetch("http://localhost:5678/api/works");
-const works = await reponse.json();
-
-
-
+//-------------------------------------------------Récupération du token dans le localStorage------------------------------------------------
+const token = localStorage.getItem('token')
+if(token){
+    //Application de la fonction adminModeElement si le token est présent
+    adminModeElements();
+}
 //génération de la galerie---------------------------------------------------------------------
 async function genererWork (){
+    const reponse = await fetch("http://localhost:5678/api/works");
+    const works = await reponse.json();
     for (let i = 0; i < works.length; i++){
     //Selection de l'emplacement dans le html
     const sectionGallery = document.querySelector(".gallery");
@@ -29,78 +31,71 @@ async function genererWork (){
     sectionGallery.appendChild(figureElement);
     figureElement.appendChild(imgElement);
     figureElement.appendChild(titleElement);
-            
     }
 }
 genererWork();
 
+//--------------------------------------------------Filtres------------------------------------------------------------------------
 //génération du tableau de Catégories uniques
-function generateUniqueCategories(){
-    let categoriesUniques = [];
-    for ( let work of works){
-      //Boucle pour récuper toutes les catégories de works puis .find pour les rendre unique
-        const result = categoriesUniques.find(function(category){
-        return category.id === work.category.id;
-        });
-        if(result === undefined){
-        //Si le nom n'est pas déjà dans le tableau on y ajoute le nom de la catégorie
-        categoriesUniques.push(work.category);
-        }
-    }
+async function generateUniqueCategories(){
+    const reponse = await fetch("http://localhost:5678/api/categories");
+    const catagories = await reponse.json();
+    let categoriesUniques = new Set(); 
+    for ( let category of catagories){
+      //Boucle pour récupérer toutes les catégories de works puis .add pour les ajouter à l'ensemble
+        categoriesUniques.add(category);
+    } console.log(categoriesUniques);
     return categoriesUniques;
 }
-
-//------------------------------------génération des filtres--------------------------
-const categories = generateUniqueCategories();
-const filterContainerTous = document.querySelector('.filter-btn');
-//Génération du filtre Tous
-let tousFilter = document.createElement('button');
-tousFilter.innerText = 'Tous';
-filterContainerTous.appendChild(tousFilter);
-//Ajout de l'évent click affichant toutes les catégories
+async function createFilterButtons(){
+    const categoriesUniques = await generateUniqueCategories();
+    const filtersContainer = document.querySelector('.filter-btn');
+    
+    //Bouton "Toutes les catégories"
+    const tousFilter = document.createElement('button');
+    tousFilter.textContent = "Tous";
+    filtersContainer.appendChild(tousFilter);
+    //Ajout de l'évent click affichant toutes les catégories
 tousFilter.addEventListener('click', function() {
-const figures = document.querySelectorAll('figure');
-for (let figure of figures) {
-  //Affiche tout les block catégories
-    figure.style.display = 'block';
-}
-});
-//Génération des 3 filtres -------------------------------------------------------------
-const filterContainer = document.querySelector('.filter-btn');
-for (let category of categories) {
-  //Création des boutons catégories
-    let filterButton = document.createElement('button');
-  //Assignation des noms via catégory
-    filterButton.innerText = category.name;
-    filterButton.setAttribute('data-category-id', category.id);
-  //event click filtrage
-    filterButton.addEventListener('click', function() {
-    const figures = document.querySelectorAll('.projet');
+    const figures = document.querySelectorAll('figure');
     for (let figure of figures) {
-      //Affiche les éléments ayant la catégorie choisie, sinon les faits disparaitres
-        if (figure.getAttribute('data-category-id') == category.id) {
-        //affiche les blocks correspondant aux cat séléctionnées
+      //Affiche tout les block catégories
         figure.style.display = 'block';
-        } else {
-        //enlève les autres qui n'ont pas les cat séléctionnées
-        figure.style.display = 'none';
+    }})
+    
+    //Boutons pour chaque catégorie unique
+    categoriesUniques.forEach(function(category){
+        const button = document.createElement('button');
+        button.innerText = category.name;
+        button.setAttribute('data-category-id', category.id);
+        filtersContainer.appendChild(button);
+          //event click filtrage
+    button.addEventListener('click', function() {
+        const figures = document.querySelectorAll('.projet');
+        for (let figure of figures) {
+          //Affiche les éléments ayant la catégorie choisie, sinon les faits disparaitres
+            if (figure.getAttribute('data-category-id') == category.id) {
+            //affiche les blocks correspondant aux cat séléctionnées
+            figure.style.display = 'block';
+            } else {
+            //enlève les autres qui n'ont pas les cat séléctionnées
+            figure.style.display = 'none';
+            }
         }
-    }
+        });
     });
-    filterContainer.appendChild(filterButton);
+    
 }
+if(!token){
+createFilterButtons()}
 //------------------LOGIN----------------------------------------
 //Vérification du token 
 
-const token = localStorage.getItem('token')
-if(token){
-    adminModeElements();
-}
+
+
 function adminModeElements(){
         const login = document.getElementById('login')
         login.remove()
-        const filters = document.querySelector('.filter-btn');
-        filters.remove()
         const logout = document.createElement('li')
         logout.innerText='logout'
         logout.id = 'logout'
@@ -138,7 +133,7 @@ function adminModeElements(){
         const txtMdf = document.createElement('p');
         txtMdf.innerText='Modifier';
         btnModifier.appendChild(txtMdf);
-        btnModifier.addEventListener('click', genererModale)
+    btnModifier.addEventListener('click', genererModale)
 
         const btnModifierInactif = document.createElement('div');
         btnModifierInactif.classList.add('modif');
@@ -192,13 +187,14 @@ crossClose.addEventListener('click', function(event){
     const previewGallery = document.createElement('div');
     previewGallery.classList.add('gallery-modale');
     fenetreModale.appendChild(previewGallery);
-    modalegallery(works);
+    modalegallery();
 const btnAjout = document.createElement('button');
     btnAjout.classList.add ('buttonAdd');
     btnAjout.innerText = 'Ajouter une photo'
     fenetreModale.appendChild(btnAjout);
 //--------------------------------------Création de la modale Ajout----------------------------------------------
-    btnAjout.addEventListener('click', function(event){
+    btnAjout.addEventListener('click', async function(event){
+        
         event.preventDefault();
     const modaleBox = document.querySelector('.modale-box');
         modaleBox.remove();
@@ -299,8 +295,11 @@ inputFile.addEventListener('change', function() {
             const iconSelect = document.createElement('i');
             iconSelect.classList.add('fa', 'fa-angle-down');
             divInput.appendChild(iconSelect);
-
             const selectCat = document.createElement('select');
+            divInput.appendChild(selectCat)
+
+        const reponse = await fetch("http://localhost:5678/api/categories");
+        const categories = await reponse.json();
             selectCat.id = "categorie";
             selectCat.name = "catagory"
             divInput.appendChild(selectCat)
@@ -317,7 +316,9 @@ inputFile.addEventListener('change', function() {
             option.id = 'option'
             selectCat.appendChild(option);
             });
-        }
+            
+        }   
+
             const submitBtn = document.createElement('button');
             submitBtn.innerText = 'Valider'
             submitBtn.type = 'submit'; 
@@ -344,16 +345,15 @@ function checkInputs() {
             btnSuppr.classList.add ('supprGallery');
             btnSuppr.innerText = 'Supprimer la galerie'
             fenetreModale.appendChild(btnSuppr);
-            // Ajouter des événements "change" à chaque élément d'entrée
-
 }
 
-
-function modalegallery(){
+async function modalegallery(){
+    const reponse = await fetch("http://localhost:5678/api/works");
+    const works = await reponse.json();
+        const modale = document.querySelector('.gallery-modale');
     for (let i = 0; i < works.length; i++){
         //Recupération des données pour les images
         const article = works[i];
-        const modale = document.querySelector('.gallery-modale');
         let figureModale = document.createElement('figure');
         figureModale.classList.add ('figureModale');
         figureModale.setAttribute('data-id', works[i].id)
@@ -369,7 +369,7 @@ function modalegallery(){
         const containerIconTrash = document.createElement('div');
         containerIconTrash.classList.add('containerIconTrash');
         containerIconTrash.setAttribute('data-id', works[i].id);
-            containerIconTrash.addEventListener('click', supprimerProjet);
+    containerIconTrash.addEventListener('click', supprimerProjet);
         const trashIcon = document.createElement("i");
         trashIcon.classList.add("fa", "fa-trash-can");
         const containerIconCross = document.createElement('div');
@@ -385,8 +385,8 @@ function modalegallery(){
         modale.appendChild(figureModale);
         contenairImg.append(imgModale);
         figureModale.append(editImg);
-    }
-}
+    }}
+
 function fermerModale() {
     const backModale = document.querySelector('.modale');
     if (backModale) {
@@ -399,7 +399,6 @@ async function supprimerProjet(event) {
     // récupérer l'ID du projet à supprimer
     const id = this.getAttribute('data-id');
     try {
-      // envoyer une requête HTTP DELETE à l'API
         const response = await fetch(`http://localhost:5678/api/works/${id}`, {
         method: 'DELETE',
         headers: {
@@ -407,6 +406,7 @@ async function supprimerProjet(event) {
         } 
         });
         if (response.ok) {
+            console.log(response);
             console.log(`L'élément a été supprimé`);
         // si la requête a réussi, supprimer l'élément figure correspondant à ce projet de la page
         const figure = document.querySelector(`figure[data-id="${id}"]`);
@@ -442,12 +442,48 @@ function genererFigure(article) {
     const sectionGallery = document.querySelector(".gallery");
     sectionGallery.appendChild(figureElement);
 }
+function newWorkModale(article){
+    let modale = document.querySelector('.gallery-modale')
+    if(modale){
+    let figureModale = document.createElement('figure');
+        figureModale.classList.add ('figureModale');
+        figureModale.setAttribute('data-id', article.id)
+    let contenairImg = document.createElement('div');
+        contenairImg.classList.add('containerImg')
+    let imgModale = document.createElement('img');
+        imgModale.classList.add('imgModale')
+        imgModale.src = article.imageUrl;
+        imgModale.crossOrigin = "anonymous";
+    let editImg = document.createElement('figcaption');
+        editImg.innerText = 'éditer';
+        //Ajout des icones et de leurs fonds
+    let containerIconTrash = document.createElement('div');
+        containerIconTrash.classList.add('containerIconTrash');
+        containerIconTrash.setAttribute('data-id', article.id);
+            containerIconTrash.addEventListener('click', supprimerProjet);
+    let trashIcon = document.createElement("i");
+        trashIcon.classList.add("fa", "fa-trash-can");
+    let containerIconCross = document.createElement('div');
+        containerIconCross.classList.add('containerIconCross');
+    let crossIcon = document.createElement("i");
+        crossIcon.classList.add("fa", "fa-up-down-left-right");
+        crossIcon.crossOrigin = 'anonymous';
+        figureModale.appendChild(contenairImg);
+        contenairImg.appendChild(containerIconTrash);
+        contenairImg.appendChild(containerIconCross);
+        containerIconTrash.appendChild(trashIcon);
+        containerIconCross.appendChild(crossIcon);
+        modale.appendChild(figureModale);
+        contenairImg.append(imgModale);
+        figureModale.append(editImg);
+    }
+}
 //--------------------------------------Ajout de projet---------------------------------------------------------
-async function addProjet(event) {    
+async function addProjet(event) {
         event.preventDefault();
-        const inputFile = document.getElementById('input-file');
-        const inputTitle = document.getElementById('title'); 
-        const selectCat = document.getElementById('categorie');
+    const inputFile = document.getElementById('input-file');
+    const inputTitle = document.getElementById('title'); 
+    const selectCat = document.getElementById('categorie');
         // Vérification des champs obligatoires
         if (!inputFile.value) {
             alert('Veuillez sélectionner une image.');
@@ -457,7 +493,6 @@ async function addProjet(event) {
             alert('Veuillez entrer un titre.');
             return;
         }
-        
     const formData = new FormData();
         formData.append('image', inputFile.files[0]);
         formData.append('title', inputTitle.value);
@@ -471,9 +506,11 @@ async function addProjet(event) {
                 body: formData, 
             });
             if (response.ok) {
+
                 const newWork = await response.json();
                 console.log(newWork);
-                genererFigure(newWork)
+                genererFigure(newWork);
+                newWorkModale(newWork);
                 fermerModale();
                 console.log(`L'image a bien été envoyée`);
             } else {
@@ -482,6 +519,7 @@ async function addProjet(event) {
             }
         } catch (error) {
             console.error(error);
-        }}
-    
+        }
+    }
+
 //----------------------------------------fin ajout ------------------------------------------------------
