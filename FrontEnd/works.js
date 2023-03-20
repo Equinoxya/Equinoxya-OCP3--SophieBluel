@@ -224,7 +224,7 @@ crossClose.addEventListener('click', function(event){
         titleModaleAjout.innerText = 'Ajout photo';
         titleModaleAjout.classList.add ('ajouttitle');
         contenuModale.appendChild(titleModaleAjout);
-//-----------------Création du formulaire----------------------------
+//------------------------------------------Création du formulaire-----------------------------------
 
             const formAdd = document.createElement('form');
             formAdd.action = 'submit';
@@ -462,42 +462,6 @@ function genererFigure(article) {
     const sectionGallery = document.querySelector(".gallery");
     sectionGallery.appendChild(figureElement);
 }
-function newWorkModale(article){
-    let modale = document.querySelector('.gallery-modale')
-    if(modale){
-    let figureModale = document.createElement('figure');
-        figureModale.classList.add ('figureModale');
-        figureModale.setAttribute('data-id', article.id)
-    let contenairImg = document.createElement('div');
-        contenairImg.classList.add('containerImg')
-    let imgModale = document.createElement('img');
-        imgModale.classList.add('imgModale')
-        imgModale.src = article.imageUrl;
-        imgModale.crossOrigin = "anonymous";
-    let editImg = document.createElement('figcaption');
-        editImg.innerText = 'éditer';
-        //Ajout des icones et de leurs fonds
-    let containerIconTrash = document.createElement('div');
-        containerIconTrash.classList.add('containerIconTrash');
-        containerIconTrash.setAttribute('data-id', article.id);
-            containerIconTrash.addEventListener('click', supprimerProjet);
-    let trashIcon = document.createElement("i");
-        trashIcon.classList.add("fa", "fa-trash-can");
-    let containerIconCross = document.createElement('div');
-        containerIconCross.classList.add('containerIconCross');
-    let crossIcon = document.createElement("i");
-        crossIcon.classList.add("fa", "fa-up-down-left-right");
-        crossIcon.crossOrigin = 'anonymous';
-        figureModale.appendChild(contenairImg);
-        contenairImg.appendChild(containerIconTrash);
-        contenairImg.appendChild(containerIconCross);
-        containerIconTrash.appendChild(trashIcon);
-        containerIconCross.appendChild(crossIcon);
-        modale.appendChild(figureModale);
-        contenairImg.append(imgModale);
-        figureModale.append(editImg);
-    }
-}
 //--------------------------------------Ajout de projet---------------------------------------------------------
 async function addProjet(event) {
         event.preventDefault();
@@ -527,11 +491,9 @@ async function addProjet(event) {
                 body: formData, 
             });
             if (response.ok) {
-
                 const newWork = await response.json();
                 console.log(newWork);
                 genererFigure(newWork);
-                newWorkModale(newWork);
                 fermerModale();
                 console.log(`L'image a bien été envoyée`);
             } else {
