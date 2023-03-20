@@ -4,7 +4,7 @@ if(token){
     //Application de la fonction adminModeElement si le token est présent
     adminModeElements();
 }
-//génération de la galerie---------------------------------------------------------------------
+//----------------------------------------------génération de la galerie---------------------------------------------------------------------
 async function genererWork (){
     const reponse = await fetch("http://localhost:5678/api/works");
     const works = await reponse.json();
@@ -15,7 +15,7 @@ async function genererWork (){
     const article = works[i];
     //Création de la figure
     let figureElement = document.createElement("figure");
-    //SetAttribue pour attribuer les catégories correspondantes
+    //SetAttribue pour attribuer les catégories et id correspondants
         figureElement.setAttribute("data-category-id", works[i].category.id)
         figureElement.setAttribute('data-id', works[i].id)
     //ajout d'une classe pour que ça ne prenne pas toutes les figures de la page
@@ -33,13 +33,16 @@ async function genererWork (){
     figureElement.appendChild(titleElement);
     }
 }
+//appel à la fonction pour générer la galerie ---------------------------------------------------------------------------------------------
 genererWork();
 
 //--------------------------------------------------Filtres------------------------------------------------------------------------
 //génération du tableau de Catégories uniques
 async function generateUniqueCategories(){
+    // fetch sur l'api Categories pour récuperer les catégories et leurs Id 
     const reponse = await fetch("http://localhost:5678/api/categories");
     const catagories = await reponse.json();
+    //Création du tableau de catégorie sans doublon grace à Set()
     let categoriesUniques = new Set(); 
     for ( let category of catagories){
       //Boucle pour récupérer toutes les catégories de works puis .add pour les ajouter à l'ensemble
@@ -47,7 +50,9 @@ async function generateUniqueCategories(){
     } console.log(categoriesUniques);
     return categoriesUniques;
 }
+//fonction pour créer les boutons de filtres associés aux catégories 
 async function createFilterButtons(){
+    //récupération de la fonction qui permet la création des catégories sans doublons 
     const categoriesUniques = await generateUniqueCategories();
     const filtersContainer = document.querySelector('.filter-btn');
     
@@ -86,9 +91,10 @@ tousFilter.addEventListener('click', function() {
     });
     
 }
+//Ajout des filtres si pas en mode admin
 if(!token){
 createFilterButtons()}
-//------------------LOGIN----------------------------------------
+//-----------------------------------------------------------LOGIN----------------------------------------
 function adminModeElements(){
         const login = document.getElementById('login')
         login.remove()
@@ -101,7 +107,8 @@ function adminModeElements(){
         ul.insertBefore(logout, instaItem)
          // Ajouter un event listener sur le bouton "logout"
     logout.addEventListener('click', function(){
-        localStorage.clear(); // Effacer le localStorage au clic sur "logout"
+        // Effacer le localStorage au clic sur "logout"
+        localStorage.clear(); 
         window.location.href = 'index.html';
     });
         const adminBar = document.createElement('div');
@@ -155,7 +162,7 @@ function adminModeElements(){
         const h2Intro = document.getElementById('h2Intro')
         emplacementModif2.insertBefore(btnModifierInactif2, h2Intro)
     }
-//-----------------------------------------Ouverture de la modale------------
+//-----------------------------------------------Ouverture de la modale--------------------------------------------------------------------
 async function genererModale(){
     const backModale = document.createElement('aside');
     const emplModale = document.querySelector('body');
@@ -164,6 +171,7 @@ async function genererModale(){
     const fenetreModale = document.createElement('div');
     backModale.appendChild(fenetreModale);
     fenetreModale.classList.add('modale-box');
+    //Fermeture de la modale par clic sur le back
 backModale.addEventListener('click', function(event) {
     if (event.target === backModale) {
         backModale.remove();
@@ -189,8 +197,7 @@ const btnAjout = document.createElement('button');
     btnAjout.innerText = 'Ajouter une photo'
     fenetreModale.appendChild(btnAjout);
 //--------------------------------------Création de la modale Ajout----------------------------------------------
-    btnAjout.addEventListener('click', async function(event){
-        
+btnAjout.addEventListener('click', async function(event){
         event.preventDefault();
     const modaleBox = document.querySelector('.modale-box');
         modaleBox.remove();
@@ -206,7 +213,7 @@ const btnAjout = document.createElement('button');
         const crossClose = document.createElement('i');
         crossClose.classList.add('fa','fa-xmark');
         divIcon.appendChild(crossClose);
-    crossClose.addEventListener('click', function(event){
+crossClose.addEventListener('click', function(event){
         event.preventDefault();
         backModale.remove();
     });
@@ -243,9 +250,11 @@ const btnAjout = document.createElement('button');
 inputFile.addEventListener('change', function() {
     // Vérifier que l'utilisateur a sélectionné un fichier
     if (inputFile.files && inputFile.files[0]) {
+    //Création d'une instance  de FileReader pour lire le fichier en mode asynchrone
     const reader = new FileReader();
+    // fonction de rappel  qui sera appelée lorsque le fichier aura chargé
     reader.onload = function(e) {
-        // Créer une balise <img> et définir sa source
+    // Créer une balise <img> et définir sa source
         const img = document.createElement('img');
         img.classList.add ('imgPreviewResult')
         img.src = e.target.result;
@@ -301,10 +310,12 @@ inputFile.addEventListener('change', function() {
             divInput.appendChild(selectCat)
             //Select des catégories + ""
         if (selectCat.options.length === 0) {
+            //Ajout de l'option vide
             const emptyOption = document.createElement("option");
             emptyOption.value = "";
             emptyOption.textContent = "";
             selectCat.appendChild(emptyOption);
+            //Pour chaque catégorie on associe son nom et son id pour créer les options du select
                 categories.forEach((category) => {
             const option = document.createElement("option");
             option.textContent = category.name;
@@ -322,8 +333,10 @@ inputFile.addEventListener('change', function() {
             submitBtn.id = 'postForm'
             formAdd.appendChild(submitBtn)
         if(fenetreModale){
+            //fonction addProject à l'envois du formulaire
             formAdd.addEventListener('submit', addProjet);
         }
+        //Vérification des champs remplis, si tous rempli le bouton valider passe au vert
         inputFile.addEventListener('change', checkInputs);
         inputTitle.addEventListener('change', checkInputs);
         selectCat.addEventListener('change', checkInputs);
@@ -342,8 +355,9 @@ function checkInputs() {
             btnSuppr.innerText = 'Supprimer la galerie'
             fenetreModale.appendChild(btnSuppr);
 }
-
+//--------------------------------------------------fonction qui permet l'affichage de la galerie Modale------------------------------------
 async function modalegallery(){
+    //Fetch pour faire en sorte que les projet s'ajoute dynamiquement à l'ouverture de la modale 
     const reponse = await fetch("http://localhost:5678/api/works");
     const works = await reponse.json();
         const modale = document.querySelector('.gallery-modale');
@@ -365,22 +379,21 @@ async function modalegallery(){
         const containerIconTrash = document.createElement('div');
         containerIconTrash.classList.add('containerIconTrash');
         containerIconTrash.setAttribute('data-id', works[i].id);
+        //Exécution de la fonction de suppression au clic sur la poubelle
     containerIconTrash.addEventListener('click', supprimerProjet);
         const trashIcon = document.createElement("i");
         trashIcon.classList.add("fa", "fa-trash-can");
         const containerIconCross = document.createElement('div');
         containerIconCross.classList.add('containerIconCross');
-
+        containerIconCross.setAttribute('data-id', works[i].id);
         // Ajouter un événement mouseenter à la figure pour afficher containerIconCross
-    figureModale.addEventListener('mouseenter', function() {
-        containerIconCross.style.display = 'flex';
+figureModale.addEventListener('mouseenter', function() {
+    containerIconCross.style.display = 'flex';
     });
-    
-    // Ajouter un événement mouseleave à la figure pour masquer containerIconCross
-    figureModale.addEventListener('mouseleave', function() {
-        containerIconCross.style.display = 'none';
+  // Ajouter un événement mouseleave à la figure pour masquer containerIconCross
+figureModale.addEventListener('mouseleave', function() {
+    containerIconCross.style.display = 'none';
     });
-
         const crossIcon = document.createElement("i");
         crossIcon.classList.add("fa", "fa-up-down-left-right");
         crossIcon.crossOrigin = 'anonymous';
@@ -393,7 +406,7 @@ async function modalegallery(){
         contenairImg.append(imgModale);
         figureModale.append(editImg);
     }}
-
+//-----------------------------------------------------fonction pour la fermeture des modales après l'envoi-------------------------
 function fermerModale() {
     const backModale = document.querySelector('.modale');
     if (backModale) {
@@ -421,7 +434,7 @@ async function supprimerProjet(event) {
         const figureModale = document.querySelector(`figure[data-id="${id}"].figureModale`)
             figureModale.remove()
         } else {
-        console.log('Erreur lors de la suppression du projet');
+        alert('Erreur lors de la suppression du projet');
         }
     } catch (error) {
         console.error(error);
@@ -488,6 +501,7 @@ function newWorkModale(article){
 //--------------------------------------Ajout de projet---------------------------------------------------------
 async function addProjet(event) {
         event.preventDefault();
+        //Récupération des inputs
     const inputFile = document.getElementById('input-file');
     const inputTitle = document.getElementById('title'); 
     const selectCat = document.getElementById('categorie');

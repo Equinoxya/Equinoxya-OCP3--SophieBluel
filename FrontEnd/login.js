@@ -10,6 +10,7 @@ form.addEventListener('submit', async (event) => {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+        //Récupération du contenu des inputs
         email: emailInput.value,
         password: passwordInput.value
     })
