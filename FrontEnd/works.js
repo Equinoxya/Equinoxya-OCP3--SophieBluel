@@ -50,6 +50,7 @@ async function generateUniqueCategories(){
     } console.log(categoriesUniques);
     return categoriesUniques;
 }
+
 //fonction pour créer les boutons de filtres associés aux catégories 
 async function createFilterButtons(){
     //récupération de la fonction qui permet la création des catégories sans doublons 
@@ -432,7 +433,7 @@ async function supprimerProjet(event) {
         const figure = document.querySelector(`figure[data-id="${id}"]`);
             figure.remove();
         const figureModale = document.querySelector(`figure[data-id="${id}"].figureModale`)
-            figureModale.remove()
+            figureModale.remove();
         } else {
         alert('Erreur lors de la suppression du projet');
         }
